@@ -24,8 +24,7 @@ public class AntScript : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionEnter2D(Collision2D collision)
-	{
-		Debug.Log("Collision");
+	void OnTriggerEnter2D(Collider2D collision) {
+		Debug.Log("CollisionTrigger");
 	}
 }
