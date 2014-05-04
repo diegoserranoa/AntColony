@@ -19,10 +19,12 @@ public class TerrainScript : MonoBehaviour {
 			Debug.Log("Food");
 			time = 0;
 			// Generate food
-			int x = Random.Range(0,100);
+			int x = Random.Range(50,100);
 			int y = Random.Range(0,100);
-			Transform food = Instantiate(prefab) as Transform;
-			food.transform.position = new Vector2(x, y);
+			for (int i = 0; i < 10; i++){
+				Transform food = Instantiate(prefab) as Transform;
+				food.transform.position = new Vector2(x, y);
+			}
 		}
 	}
 }
