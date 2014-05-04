@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Script\AntScript.cs" />
      <Compile Include="Assets\Script\EggScript.cs" />
+     <Compile Include="Assets\Script\HormoneScript.cs" />
      <Compile Include="Assets\Script\QueenScript.cs" />
      <Compile Include="Assets\Script\TerrainScript.cs" />
   </ItemGroup>

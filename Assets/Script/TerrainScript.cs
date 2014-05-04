@@ -15,12 +15,12 @@ public class TerrainScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		time += Time.deltaTime;	
-		if (time > 1) {
-			Debug.Log("Food");
+		if (time > 15) {
 			time = 0;
 			// Generate food
-			int x = Random.Range(50,100);
-			int y = Random.Range(0,100);
+			int x = Random.Range(5,10) * 10;
+			int y = Random.Range(0,10) * 10;
+
 			for (int i = 0; i < 10; i++){
 				Transform food = Instantiate(prefab) as Transform;
 				food.transform.position = new Vector2(x, y);
