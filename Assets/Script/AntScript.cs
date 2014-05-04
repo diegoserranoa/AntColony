@@ -11,7 +11,7 @@ public class AntScript : MonoBehaviour {
 	float larvaX = 0;
 	float larvaY = 0;
 	int hormoneIndex = 1;
-	int lastHormoneIndex = 1000;
+	public int lastHormoneIndex;
 	int foodX;
 	int foodY;
 	int lastX;
@@ -28,6 +28,7 @@ public class AntScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		lastHormoneIndex = 1000;
 		hormones = new List<GameObject> ();
 	}
 	
@@ -71,24 +72,29 @@ public class AntScript : MonoBehaviour {
 		// la posicion de la comida.
 		else if (foundSomething) {
 			Debug.Log("fooundFood");
-			// Revisar posicion de comida.
-			if (transform.position.x < foodX){
-				transform.position = new Vector2(transform.position.x + 1f, transform.position.y);
-			} else if (transform.position.x > foodX){
-				transform.position = new Vector2(transform.position.x - 1f, transform.position.y);
-			} else if (transform.position.y < foodY){
-				transform.position = new Vector2(transform.position.x, transform.position.y + 1f);
-			} else if (transform.position.y > foodY){
-				transform.position = new Vector2(transform.position.x, transform.position.y - 1f);
-			} else if (transform.position.x == foodX && transform.position.y == foodY && food != null){
-				// Encontro la comida. Destruye el objeto de la comida (para simular que lo agarro)
-				Destroy(food.gameObject);
-				food = null;
+			if (transform.gameObject != null){
+				// Revisar posicion de comida.
+				if (transform.position.x < foodX){
+					transform.position = new Vector2(transform.position.x + 1f, transform.position.y);
+				} else if (transform.position.x > foodX){
+					transform.position = new Vector2(transform.position.x - 1f, transform.position.y);
+				} else if (transform.position.y < foodY){
+					transform.position = new Vector2(transform.position.x, transform.position.y + 1f);
+				} else if (transform.position.y > foodY){
+					transform.position = new Vector2(transform.position.x, transform.position.y - 1f);
+				} else if (transform.position.x == foodX && transform.position.y == foodY && food != null){
+					// Encontro la comida. Destruye el objeto de la comida (para simular que lo agarro)
+					Destroy(food.gameObject);
+					food = null;
+					foundSomething = false;
+					hasFood = true;
+					lastX = (int) transform.position.x;
+					lastY = (int) transform.position.y;
+				}
+			} else {
 				foundSomething = false;
-				hasFood = true;
-				lastX = (int) transform.position.x;
-				lastY = (int) transform.position.y;
 			}
+
 		}
 		// Encontrar un hormona y seguirla para llegar
 		// a un lugar donde haya comida.
