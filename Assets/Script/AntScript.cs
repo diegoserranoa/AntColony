@@ -31,7 +31,10 @@ public class AntScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		// Regresar comida a reina.
 		if (hasFood) {
+			// después de avanzar cierta cantidad dejar
+			// hormonas en el camino
 			if (((lastX - transform.position.x) > 10) || ((lastY - transform.position.y) > 10)){
 				lastX = (int) transform.position.x;
 				lastY = (int) transform.position.y;
@@ -40,6 +43,8 @@ public class AntScript : MonoBehaviour {
 				Destroy(hormone.gameObject,3);
 			}
 
+			// Checar si ya se encuentra en la posicion
+			// de la reina para dejarle la comida.
 			if (transform.position.x < larvaX){
 				transform.position = new Vector2(transform.position.x + 1f, transform.position.y);
 			} else if (transform.position.x > larvaX){
@@ -49,15 +54,43 @@ public class AntScript : MonoBehaviour {
 			} else if (transform.position.y > larvaY){
 				transform.position = new Vector2(transform.position.x, transform.position.y - 1f);
 			} else if (transform.position.x == larvaX && transform.position.y == larvaY){
+				// Dejar comida. Food2
 				Transform newFood = Instantiate(prefab) as Transform;
 				newFood.transform.position = new Vector3(larvaX, larvaY);
 				hasFood = false;
 			}
-		} else if (foundHormone){
+		} 
+		// Encontro comida e ir hacia
+		// la posicion de la comida.
+		else if (foundSomething) {
+			// Revisar posicion de comida.
+			if (transform.position.x < foodX){
+				transform.position = new Vector2(transform.position.x + 1f, transform.position.y);
+			} else if (transform.position.x > foodX){
+				transform.position = new Vector2(transform.position.x - 1f, transform.position.y);
+			} else if (transform.position.y < foodY){
+				transform.position = new Vector2(transform.position.x, transform.position.y + 1f);
+			} else if (transform.position.y > foodY){
+				transform.position = new Vector2(transform.position.x, transform.position.y - 1f);
+			} else if (transform.position.x == foodX && transform.position.y == foodY && food != null){
+				// Encontro la comida. Destruye el objeto de la comida (para simular que lo agarro)
+				Destroy(food.gameObject);
+				food = null;
+				foundSomething = false;
+				hasFood = true;
+				lastX = (int) transform.position.x;
+				lastY = (int) transform.position.y;
+			}
+		}
+		// Encontrar un hormona y seguirla para llegar
+		// a un lugar donde haya comida.
+		else if (foundHormone){
 			GameObject hormone = (GameObject) hormones[index];
 			int hormoneX = (int) hormone.transform.position.x;
 			int hormoneY = (int) hormone.transform.position.y;
 			Debug.Log ("hormoneX: " + hormoneX);
+			// Revisar posicion de hormona encontrada e
+			// ir hacia esa posicion
 			if (transform.position.x < hormoneX){
 				transform.position = new Vector2(transform.position.x + 1f, transform.position.y);
 			} else if (transform.position.x > hormoneX){
@@ -69,27 +102,9 @@ public class AntScript : MonoBehaviour {
 			} else if (transform.position.x == hormoneX && transform.position.y == hormoneY){
 				index++;
 			}
-		} else if (foundSomething) {
-			if (transform.position.x < foodX){
-				transform.position = new Vector2(transform.position.x + 1f, transform.position.y);
-			} else if (transform.position.x > foodX){
-				transform.position = new Vector2(transform.position.x - 1f, transform.position.y);
-			} else if (transform.position.y < foodY){
-				transform.position = new Vector2(transform.position.x, transform.position.y + 1f);
-			} else if (transform.position.y > foodY){
-				transform.position = new Vector2(transform.position.x, transform.position.y - 1f);
-			} else if (transform.position.x == foodX && transform.position.y == foodY && food != null){
-				Destroy(food.gameObject);
-				food = null;
-				foundSomething = false;
-				hasFood = true;
-				lastX = (int) transform.position.x;
-				lastY = (int) transform.position.y;
-
-			}
-
-
-		} else {
+		} 
+		// No ha encontrado nada. Recorrer el mapa.
+		else {
 			if (transform.position.x >= maxX && transform.position.y < maxY){
 				transform.position = new Vector2(transform.position.x, transform.position.y + 1);
 				positionX = -1;
@@ -109,6 +124,7 @@ public class AntScript : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D collision) {
 
+		// Colision con una hormona.
 		if (collision.gameObject.tag.Equals ("Hormone") && !foundSomething) {
 			Debug.Log("Found hormone");
 			bool exists = false;
@@ -122,7 +138,9 @@ public class AntScript : MonoBehaviour {
 			if (!exists){
 				hormones.Add (collision.gameObject);
 			}
-		} else if (collision.gameObject.tag.Equals ("Food")) {
+		} 
+		// Colision con comida.
+		else if (collision.gameObject.tag.Equals ("Food")) {
 			Debug.Log("Found food");
 			if (food == null && !hasFood) {
 				foodX = (int)collision.gameObject.transform.position.x;

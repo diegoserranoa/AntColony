@@ -16,6 +16,7 @@ public class EggScript : MonoBehaviour {
 	}
 
 	void OnDestroy(){
+		// Al destruirse, crear hormiga.
 		Transform ant = Instantiate(antPrefab) as Transform;
 		ant.transform.position = new Vector2(this.transform.position.x, this.transform.position.x);
 	}

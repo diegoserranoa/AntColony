@@ -17,7 +17,7 @@ public class QueenScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (food >= neededFood) {
-			// crear larva
+			// Crear larva
 			food = 0;
 			Transform egg = Instantiate(eggPrefab) as Transform;
 			egg.transform.position = new Vector2(eggX, eggY);
@@ -33,6 +33,8 @@ public class QueenScript : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D collision) {
+
+		// Encontro comida. Comerla.
 		if (collision.gameObject.tag.Equals ("Food2")) {
 			Destroy (collision.gameObject);
 			food++;
