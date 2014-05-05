@@ -17,6 +17,7 @@ public class AntScript : MonoBehaviour {
 	int lastX;
 	int lastY;
 	int index = 0;
+	bool isGoingUp = true;
 	bool foundSomething = false;
 	bool hasFood = false;
 	bool foundHormone = false;
@@ -74,7 +75,7 @@ public class AntScript : MonoBehaviour {
 		// la posicion de la comida.
 		else if (foundSomething) {
 			Debug.Log("fooundFood");
-			if (transform.gameObject != null){
+			if (food != null){
 				// Revisar posicion de comida.
 				if (transform.position.x < foodX){
 					transform.position = new Vector2(transform.position.x + 1f, transform.position.y);
@@ -108,19 +109,14 @@ public class AntScript : MonoBehaviour {
 				// Revisar posicion de hormona encontrada e
 				// ir hacia esa posicion
 				if (transform.position.x < hormoneX){
-					Debug.Log("1");
 					transform.position = new Vector2(transform.position.x + 1f, transform.position.y);
 				} else if (transform.position.x > hormoneX){
-					Debug.Log("2");
 					transform.position = new Vector2(transform.position.x - 1f, transform.position.y);
 				} else if (transform.position.y < hormoneY){
-					Debug.Log("3");
 					transform.position = new Vector2(transform.position.x, transform.position.y + 1f);
 				} else if (transform.position.y > hormoneY){
-					Debug.Log("4");
 					transform.position = new Vector2(transform.position.x, transform.position.y - 1f);
 				} else if (transform.position.x == hormoneX && transform.position.y == hormoneY){
-					Debug.Log("5");
 					lastHormoneIndex = hormone.GetComponent<HormoneScript>().index;
 					index++;
 				}
@@ -130,16 +126,32 @@ public class AntScript : MonoBehaviour {
 		} 
 		// No ha encontrado nada. Recorrer el mapa.
 		else {
-			Debug.Log("explore");
-			if (transform.position.x >= maxX && transform.position.y < maxY){
-				transform.position = new Vector2(transform.position.x, transform.position.y + 1);
+
+			if (transform.position.x >= maxX && isGoingUp){
+				positionY = 10;
 				positionX = -1;
-			} else if (transform.position.x <= 0) {
-				transform.position = new Vector2(transform.position.x, transform.position.y + 1);
+			} 
+			else if (transform.position.x <= 0 && isGoingUp){
+				positionY = 10;
+				positionX = 1;
+			}
+			else if (transform.position.x >= maxX && !isGoingUp){
+				positionY = -10;
+				positionX = -1;
+			}
+			else if (transform.position.x <= 0 && !isGoingUp){
+				positionY = -10;
 				positionX = 1;
 			}
 
-			transform.position = new Vector2(transform.position.x + positionX, transform.position.y);
+			if (transform.position.y >= (maxY - 5)){
+				isGoingUp = false;
+			} else if (transform.position.y <= 5){
+				isGoingUp = true;
+			}
+
+			transform.position = new Vector2(transform.position.x + positionX, transform.position.y + positionY);
+			positionY = 0;
 		}
 	}
 
@@ -183,16 +195,11 @@ public class AntScript : MonoBehaviour {
 				food = collision.transform.gameObject;
 			}
 		}
-		else if (collision.gameObject.name.Equals ("GameObject")) {
-			Debug.Log("obstacle");
+		else if (collision.gameObject.tag.Equals ("Ground")) {
 			RaycastHit2D hit = Physics2D.Raycast(collision.transform.position, Vector2.zero);
 			if(hit.collider != null) {
-				Debug.Log ("Target Position: " + hit.collider.gameObject.transform.position);
 				if (hit.collider.gameObject.transform.position.x <= (this.transform.position.x + 15)){
-					positionX = -1;
-				}
-				if ((hit.collider.gameObject.transform.position.x - 10) <= (this.transform.position.x)){
-					positionX = -1;
+					//positionX = -1;
 				}
 			}
 		}
