@@ -8,8 +8,8 @@ public class AntScript : MonoBehaviour {
 	int maxY = 100;
 	float positionX = 1;
 	float positionY;
-	float larvaX = 0;
-	float larvaY = 0;
+	float larvaX = 5;
+	float larvaY = 5;
 	int hormoneIndex = 1;
 	public int lastHormoneIndex;
 	int foodX;
@@ -22,6 +22,7 @@ public class AntScript : MonoBehaviour {
 	bool foundHormone = false;
 	GameObject food;
 	List<GameObject> hormones;
+	List<Vector2> colonyEntries;
 	public Transform prefab;
 	public Transform hormonePrefab;
 
@@ -30,6 +31,8 @@ public class AntScript : MonoBehaviour {
 	void Start () {
 		lastHormoneIndex = 1000;
 		hormones = new List<GameObject> ();
+		//colonyEntries = new List<Vector2> ();
+		//colonyEntries [0] = new Vector2 (Random.Range (0, 20) * 10, Random.Range (0, 20) * 10);
 	}
 	
 	// Update is called once per frame
@@ -48,7 +51,6 @@ public class AntScript : MonoBehaviour {
 				hormoneIndex++;
 				Destroy(hormone.gameObject,10);
 			}
-
 			// Checar si ya se encuentra en la posicion
 			// de la reina para dejarle la comida.
 			if (transform.position.x < larvaX){
@@ -144,6 +146,7 @@ public class AntScript : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D coll) {
 		Debug.Log (coll);
 
+
 	}
 
 	void OnTriggerEnter2D(Collider2D collision) {
@@ -178,6 +181,19 @@ public class AntScript : MonoBehaviour {
 				hormones = new List<GameObject> ();
 				foundSomething = true;
 				food = collision.transform.gameObject;
+			}
+		}
+		else if (collision.gameObject.name.Equals ("GameObject")) {
+			Debug.Log("obstacle");
+			RaycastHit2D hit = Physics2D.Raycast(collision.transform.position, Vector2.zero);
+			if(hit.collider != null) {
+				Debug.Log ("Target Position: " + hit.collider.gameObject.transform.position);
+				if (hit.collider.gameObject.transform.position.x <= (this.transform.position.x + 15)){
+					positionX = -1;
+				}
+				if ((hit.collider.gameObject.transform.position.x - 10) <= (this.transform.position.x)){
+					positionX = -1;
+				}
 			}
 		}
 			
