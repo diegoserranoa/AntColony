@@ -43,7 +43,7 @@ public class AntScript : MonoBehaviour {
 			Debug.Log("hasFood");
 			// después de avanzar cierta cantidad dejar
 			// hormonas en el camino
-			if (((lastX - transform.position.x) > 10) || ((lastY - transform.position.y) > 10)){
+			if ((((lastX - transform.position.x) > 10) || ((lastY - transform.position.y) > 10)) && (transform.position.x > (larvaX + 10))){
 				lastX = (int) transform.position.x;
 				lastY = (int) transform.position.y;
 				Transform hormone = Instantiate(hormonePrefab) as Transform;
@@ -54,14 +54,14 @@ public class AntScript : MonoBehaviour {
 			}
 			// Checar si ya se encuentra en la posicion
 			// de la reina para dejarle la comida.
-			if (transform.position.x < larvaX){
-				transform.position = new Vector2(transform.position.x + 1f, transform.position.y);
-			} else if (transform.position.x > larvaX){
-				transform.position = new Vector2(transform.position.x - 1f, transform.position.y);
-			} else if (transform.position.y < larvaY){
+			if (transform.position.y < larvaY){
 				transform.position = new Vector2(transform.position.x, transform.position.y + 1f);
 			} else if (transform.position.y > larvaY){
 				transform.position = new Vector2(transform.position.x, transform.position.y - 1f);
+			} else if (transform.position.x < larvaX){
+				transform.position = new Vector2(transform.position.x + 1f, transform.position.y);
+			} else if (transform.position.x > larvaX){
+				transform.position = new Vector2(transform.position.x - 1f, transform.position.y);
 			} else if (transform.position.x == larvaX && transform.position.y == larvaY){
 				// Dejar comida. Food2
 				Transform newFood = Instantiate(prefab) as Transform;
@@ -104,20 +104,24 @@ public class AntScript : MonoBehaviour {
 		else if (foundHormone){
 			if (index < hormones.Count && (GameObject) hormones[index] != null){
 				GameObject hormone = (GameObject) hormones[index];
-				int hormoneX = (int) hormone.transform.position.x;
-				int hormoneY = (int) hormone.transform.position.y;
-				// Revisar posicion de hormona encontrada e
-				// ir hacia esa posicion
-				if (transform.position.x < hormoneX){
-					transform.position = new Vector2(transform.position.x + 1f, transform.position.y);
-				} else if (transform.position.x > hormoneX){
-					transform.position = new Vector2(transform.position.x - 1f, transform.position.y);
-				} else if (transform.position.y < hormoneY){
-					transform.position = new Vector2(transform.position.x, transform.position.y + 1f);
-				} else if (transform.position.y > hormoneY){
-					transform.position = new Vector2(transform.position.x, transform.position.y - 1f);
-				} else if (transform.position.x == hormoneX && transform.position.y == hormoneY){
-					lastHormoneIndex = hormone.GetComponent<HormoneScript>().index;
+				if (hormone.GetComponent<HormoneScript>().index <= lastHormoneIndex){
+					int hormoneX = (int) hormone.transform.position.x;
+					int hormoneY = (int) hormone.transform.position.y;
+					// Revisar posicion de hormona encontrada e
+					// ir hacia esa posicion
+					if (transform.position.x < hormoneX){
+						transform.position = new Vector2(transform.position.x + 1f, transform.position.y);
+					} else if (transform.position.x > hormoneX){
+						transform.position = new Vector2(transform.position.x - 1f, transform.position.y);
+					} else if (transform.position.y < hormoneY){
+						transform.position = new Vector2(transform.position.x, transform.position.y + 1f);
+					} else if (transform.position.y > hormoneY){
+						transform.position = new Vector2(transform.position.x, transform.position.y - 1f);
+					} else if (transform.position.x == hormoneX && transform.position.y == hormoneY){
+						lastHormoneIndex = hormone.GetComponent<HormoneScript>().index;
+						index++;
+					}
+				} else {
 					index++;
 				}
 			} else {
@@ -203,7 +207,11 @@ public class AntScript : MonoBehaviour {
 				}
 			}
 		}
-			
+	}
+
+	
+	void OnTriggerStay2D(Collider2D collision) {
+	
 	}
 
 }
