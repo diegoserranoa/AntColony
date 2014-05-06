@@ -33,10 +33,18 @@ public class AntScript : MonoBehaviour {
 	public Transform prefab;
 	public Transform hormonePrefab;
 
+	public float 	score;
+	public int 		expense;
+    public bool     updater;
+    int             steps;
+
 
 	// Use this for initialization
 	void Start () {
-		
+		score = 0;
+        steps = 1;
+		expense = 0;
+        updater = false;
 		randomFactor = Random.Range(2,6);
 		lastHormoneIndex = 1000;
 		hormones = new List<GameObject> ();
@@ -46,13 +54,13 @@ public class AntScript : MonoBehaviour {
 			positionX = 1;
 			positionY = 0;
 			this.gameObject.GetComponent<SpriteRenderer>().sprite = antRight;
-		} 
+		}
 		// Go Left
 		else if (rand == 2){
 			positionX = -1;
 			positionY = 0;
 			this.gameObject.GetComponent<SpriteRenderer>().sprite = antLeft;
-		} 
+		}
 		// Go Up
 		else if (rand == 3){
 			positionX = 0;
@@ -64,15 +72,20 @@ public class AntScript : MonoBehaviour {
 			positionX = 0;
 			positionY = -1;
 			this.gameObject.GetComponent<SpriteRenderer>().sprite = antDown;
-		} 
+		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		// Regresar comida a reina.
+        if (steps == 100)
+        {
+            expense = expense + 1;
+            steps = 1;
+        }
 		if (hasFood) {
 			goBackToColony();
-		} 
+		}
 		// Encontro comida e ir hacia
 		// la posicion de la comida.
 		else if (foundSomething) {
@@ -82,17 +95,26 @@ public class AntScript : MonoBehaviour {
 		// a un lugar donde haya comida.
 		else if (foundHormone){
 			followFeromone();
-		} 
+		}
 		// No ha encontrado nada. Recorrer el mapa.
 		else {
 			explore ();
 		}
+        if (updater)
+            sendToGUI();
+        steps = steps + 1;
 	}
+
+    void sendToGUI()
+    {
+        GUIScript.setGameObject(this.transform.gameObject);
+        this.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+    }
 
 	void goBackToColony(){
 		// después de avanzar cierta cantidad dejar
 		// hormonas en el camino
-		if ((((Mathf.Abs(lastX) - Mathf.Abs(transform.position.x)) > 10) || 
+		if ((((Mathf.Abs(lastX) - Mathf.Abs(transform.position.x)) > 10) ||
 		     ((Mathf.Abs(lastY) - Mathf.Abs(transform.position.y)) > 10))){
 			lastX = (int) transform.position.x;
 			lastY = (int) transform.position.y;
@@ -122,6 +144,7 @@ public class AntScript : MonoBehaviour {
 			hormoneIndex = 1;
 			time = 1;
 			lastHormoneIndex = 10000;
+			score = score + 10;
 		}
 	}
 
@@ -179,23 +202,23 @@ public class AntScript : MonoBehaviour {
 	}
 
 	void explore(){
-		time += Time.deltaTime;	
+		time += Time.deltaTime;
 		if (time > 0.5) {
 			time = 0;
-			
+
 			int rand = Random.Range(0,randomFactor);
 			// Go Right
 			if (rand == 1){
 				positionX = 1;
 				positionY = 0;
 				this.gameObject.GetComponent<SpriteRenderer>().sprite = antRight;
-			} 
+			}
 			// Go Left
 			else if (rand == 2){
 				positionX = -1;
 				positionY = 0;
 				this.gameObject.GetComponent<SpriteRenderer>().sprite = antLeft;
-			} 
+			}
 			// Go Up
 			else if (rand == 3){
 				positionX = 0;
@@ -207,7 +230,7 @@ public class AntScript : MonoBehaviour {
 				positionX = 0;
 				positionY = -1;
 				this.gameObject.GetComponent<SpriteRenderer>().sprite = antDown;
-			} 	
+			}
 		}
 		transform.position = new Vector2(transform.position.x + positionX, transform.position.y + positionY);
 	}
@@ -235,7 +258,7 @@ public class AntScript : MonoBehaviour {
 				lastHormoneIndex = thisIndex;
 				hormones.Add (collision.gameObject);
 			}
-		} 
+		}
 		// Colision con comida.
 		else if (collision.gameObject.tag.Equals ("Food")) {
 			if (food == null && !hasFood) {
@@ -260,9 +283,9 @@ public class AntScript : MonoBehaviour {
 		}
 	}
 
-	
+
 	void OnTriggerStay2D(Collider2D collision) {
-	
+
 	}
 
 }

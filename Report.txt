@@ -1,0 +1,43 @@
+Tecnológico de Monterrey campus Querétaro
+Proyecto Final Sistemas Inteligentes
+Simulación: Colonía de Hormigas utilizando agentes reactivos en arquitectura subsunción
+Marín Alcaraz Córdova - A01203109
+Diego Serrano Ávila - A01203386
+
+Justificación
+############
+
+Un agente reactivo es una entidad capaz de percibir su entorno a través
+de sensores y reaccionar a los cambios que éste realiza a través de sus
+actuadores. La finalidad de un agente reactivo es obtener dentro de un
+ambiente un comportamiento deseado.
+
+Los agentes reactivos llegan a ser preferidos a algún otro tipo de
+inteligencia debido a su bajo costo, buen desempeño en el problema y
+buena mantenibilidad, ésta última se debe a que comúnmente un agente
+reactivo utiliza la arquitectura de subsunción.
+
+La arquitectura de subsunción consiste en una serie de comportamientos
+acomodados de una manera jerárquica en la que el comportamiento con mayor
+jerarquía bloquea el uso de los demás comportamientos.
+Los comportamientos son activados gracias a las entradas que son captadas
+por los sensores del agente, posteriormente el comportamiento indicado
+accionara a los actuadores del agente para realizar una acción deseada.
+
+¿Porqué modelar una colonia de hormigas con los elementos anteriores?
+
+La posibilidad de crear agentes para realizar tareas en un ambiente específico
+es algo de gran importancia en el mundo real, sus aplicaciones son diversas y
+en múltiples ocasiones son preferidas a la construcción de un sistema inteligente completo.
+Entre los usos más famosos entontramos los robots Herbert y Genghis, el primero encardado de
+recolectar latas de refresco y el segundo utilizado para caminar utilizando 6 patas.
+
+La particularidad de la colonia de hormigas en la que diversos agentes interactúan nos
+permite abordar el concepto de inteligencia de enjambre, en el que gracias a que
+una gran cantidad de agentes interactúan para conseguir un fin podemos decir que el comportamiento
+es colectivo, éste símplemente emerge de la interacción de los diversos agentes con su ambiente.
+
+La posibilidad de emular en una escala pequeña un comportamiento que puede resultar
+útil, barato y sencillo de implementar para alguien más es gratificante y permite explorar
+una de las áreas más comerciales de la inteligencia artificial.
+
