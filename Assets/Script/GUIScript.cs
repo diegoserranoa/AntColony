@@ -33,14 +33,14 @@ public class GUIScript : MonoBehaviour {
     }
 
 	void OnGUI () {
-		GUI.Label (new Rect(95, 7, 100, 100), score.ToString("n2"));
+		GUI.Label (new Rect(150, 15, 100, 100), score.ToString("n2"));
 		if (randRatio == 0){
-			GUI.Label (new Rect(270, 7, 100, 100), randRatio + "");
+			GUI.Label (new Rect(410, 15, 100, 100), randRatio + "");
 		} else {
-			GUI.Label (new Rect(270, 7, 100, 100), (randRatio - 1) + "");
+			GUI.Label (new Rect(410, 15, 100, 100), (randRatio - 1) + "");
 		}
-		GUI.Label (new Rect(355, 7, 100, 100), expense + "");
-        GUI.Label (new Rect(460, 7, 100, 100), iTime + "");
+		GUI.Label (new Rect(550, 15, 100, 100), expense + "");
+        GUI.Label (new Rect(700, 15, 100, 100), iTime + "");
 		/*
 		if (GUI.Button (new Rect (10, 40, 100, 100), "Modo Precisión en sensor")) {
 			GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Player");
