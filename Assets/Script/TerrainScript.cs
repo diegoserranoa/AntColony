@@ -5,6 +5,7 @@ public class TerrainScript : MonoBehaviour {
 
 	public Transform prefab;
 	public Transform groundPrefab;
+	public int foodVar;
 
 	float time;
 
@@ -24,7 +25,7 @@ public class TerrainScript : MonoBehaviour {
 			int x = (Random.Range(-10,10) * 10) + 5;
 			int y = (Random.Range(-10,10) * 10) + 5;
 
-			for (int i = 0; i < 10; i++){
+			for (int i = 0; i < foodVar; i++){
 				Transform food = Instantiate(prefab) as Transform;
 				food.transform.position = new Vector2(x, y);
 			}

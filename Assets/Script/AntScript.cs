@@ -37,7 +37,7 @@ public class AntScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		
-		randomFactor = Random.Range(1,6);
+		randomFactor = Random.Range(2,6);
 		lastHormoneIndex = 1000;
 		hormones = new List<GameObject> ();
 		int rand = Random.Range(0,randomFactor);

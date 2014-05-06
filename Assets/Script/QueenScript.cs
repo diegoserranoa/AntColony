@@ -5,8 +5,8 @@ public class QueenScript : MonoBehaviour {
 
 	int food = 0;
 	public int neededFood;
-	int eggX = 10;
-	int eggY = 10;
+	int eggX = 5;
+	int eggY = -5;
 	public Transform eggPrefab;
 
 	// Use this for initialization
@@ -21,7 +21,6 @@ public class QueenScript : MonoBehaviour {
 			food = 0;
 			Transform egg = Instantiate(eggPrefab) as Transform;
 			egg.transform.position = new Vector2(eggX, eggY);
-			eggY += 10;
 			Destroy (egg.gameObject, 5);
 
 		}
