@@ -23,7 +23,7 @@ public class TerrainScript : MonoBehaviour {
 			// Generate food
 
 			int x = (Random.Range(-9,9) * 10) + 5;
-			int y = (Random.Range(-9,9) * 10) + 5;
+			int y = (Random.Range(-9,8) * 10) + 5;
 
 			for (int i = 0; i < foodVar; i++){
 				Transform food = Instantiate(prefab) as Transform;

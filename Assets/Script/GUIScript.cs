@@ -37,6 +37,12 @@ public class GUIScript : MonoBehaviour {
 		GUI.Label (new Rect(270, 7, 100, 100), randRatio + "");
 		GUI.Label (new Rect(355, 7, 100, 100), expense + "");
         GUI.Label (new Rect(460, 7, 100, 100), iTime + "");
+		if (GUI.Button (new Rect (10, 40, 100, 100), "Modo Precisión en sensor")) {
+			GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Player");
+			foreach (GameObject link in gameObjects){
+				link.GetComponent<AntScript>().useStay = !link.GetComponent<AntScript>().useStay;
+			}
+		}
 	}
 
     void setScore() {

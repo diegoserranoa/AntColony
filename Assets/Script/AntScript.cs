@@ -16,6 +16,7 @@ public class AntScript : MonoBehaviour {
 	float larvaX = 5;
 	float larvaY = 5;
 	float time;
+	float timeStay;
 	int hormoneIndex = 1;
 	public int lastHormoneIndex;
 	int foodX;
@@ -23,7 +24,8 @@ public class AntScript : MonoBehaviour {
 	int lastX;
 	int lastY;
 	int index = 0;
-	bool isGoingUp = true;
+
+	public bool useStay = false;
 	bool foundSomething = false;
 	bool hasFood = false;
 	bool foundHormone = false;
@@ -155,7 +157,7 @@ public class AntScript : MonoBehaviour {
 			hasFood = false;
 			hormoneIndex = 1;
 			time = 1;
-			lastHormoneIndex = 10000;
+			lastHormoneIndex = 1000;
 			score = score + 10;
 		}
 	}
@@ -254,50 +256,79 @@ public class AntScript : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D collision) {
-
-		// Colision con una hormona.
-		if (collision.gameObject.tag.Equals ("Hormone") && !foundSomething && !hasFood) {
-			bool exists = false;
-			foundHormone = true;
-
-			foreach (GameObject gameObject in hormones){
-				if (gameObject == collision.gameObject) {
-					exists = true;
+		if (!useStay) {
+			// Colision con una hormona.
+			if (collision.gameObject.tag.Equals ("Hormone") && !foundSomething && !hasFood ) {
+				bool exists = false;
+				foundHormone = true;
+				int thisIndex = collision.gameObject.GetComponent<HormoneScript>().index;
+				if (lastHormoneIndex > thisIndex){
+					foreach (GameObject gameObject in hormones){
+						if (gameObject == collision.gameObject) {
+							exists = true;
+						}
+					}
+					if (!exists){
+						lastHormoneIndex = thisIndex;
+						hormones.Add (collision.gameObject);
+					}
 				}
 			}
-			int thisIndex = collision.gameObject.GetComponent<HormoneScript>().index;
-			if (!exists && lastHormoneIndex > thisIndex){
-				lastHormoneIndex = thisIndex;
-				hormones.Add (collision.gameObject);
-			}
-		}
-		// Colision con comida.
-		else if (collision.gameObject.tag.Equals ("Food")) {
-			if (food == null && !hasFood) {
-				foodX = (int)collision.gameObject.transform.position.x;
-				foodY = (int)collision.gameObject.transform.position.y;
-
-				foundHormone = false;
-				index = 0;
-				hormones = new List<GameObject> ();
-				foundSomething = true;
-				food = collision.transform.gameObject;
-			}
-		}
-		else if (collision.gameObject.tag.Equals ("Ground")) {
-			Debug.Log("Ground");
-			RaycastHit2D hit = Physics2D.Raycast(collision.transform.position, Vector2.zero);
-			if(hit.collider != null) {
-				if (hit.collider.gameObject.transform.position.x <= (this.transform.position.x + 15)){
-					//positionX = -1;
+			// Colision con comida.
+			else if (collision.gameObject.tag.Equals ("Food")) {
+				if (food == null && !hasFood) {
+					foodX = (int)collision.gameObject.transform.position.x;
+					foodY = (int)collision.gameObject.transform.position.y;
+					
+					foundHormone = false;
+					index = 0;
+					hormones = new List<GameObject> ();
+					foundSomething = true;
+					food = collision.transform.gameObject;
 				}
 			}
 		}
+
 	}
 
 
 	void OnTriggerStay2D(Collider2D collision) {
-
+		if (useStay) {
+			timeStay += Time.deltaTime;
+			if (timeStay > 0.6) {
+				timeStay = 0;
+				// Colision con una hormona.
+				if (collision.gameObject.tag.Equals ("Hormone") && !foundSomething && !hasFood ) {
+					bool exists = false;
+					foundHormone = true;
+					int thisIndex = collision.gameObject.GetComponent<HormoneScript>().index;
+					if (lastHormoneIndex > thisIndex){
+						foreach (GameObject gameObject in hormones){
+							if (gameObject == collision.gameObject) {
+								exists = true;
+							}
+						}
+						if (!exists){
+							lastHormoneIndex = thisIndex;
+							hormones.Add (collision.gameObject);
+						}
+					}
+				}
+				// Colision con comida.
+				else if (collision.gameObject.tag.Equals ("Food")) {
+					if (food == null && !hasFood) {
+						foodX = (int)collision.gameObject.transform.position.x;
+						foodY = (int)collision.gameObject.transform.position.y;
+						
+						foundHormone = false;
+						index = 0;
+						hormones = new List<GameObject> ();
+						foundSomething = true;
+						food = collision.transform.gameObject;
+					}
+				}
+			}
+		}
 	}
 
 }
