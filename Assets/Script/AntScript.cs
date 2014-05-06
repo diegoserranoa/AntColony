@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class AntScript : MonoBehaviour {
 
-	public int maxX = 100;
-	public int maxY = 100;
+	public int maxX;
+	public int maxY;
 	public Sprite antUp;
 	public Sprite antDown;
 	public Sprite antLeft;
@@ -83,6 +83,18 @@ public class AntScript : MonoBehaviour {
             expense = expense + 1;
             steps = 1;
         }
+		if (this.transform.position.x > (maxX - 20)) {
+			positionX = -1;
+		} else if (this.transform.position.x < (-maxX + 20)) {
+			positionX = 1;
+		}
+		if (this.transform.position.y > (maxY - 20)) {
+			positionY = -1;
+		} else if (this.transform.position.y < (-maxY + 20)) {
+			positionY = 1;
+		}
+
+
 		if (hasFood) {
 			goBackToColony();
 		}
